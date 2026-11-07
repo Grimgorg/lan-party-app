@@ -5,6 +5,7 @@ import { ModeTable } from './components/ModeTable'
 import { OverviewTable } from './components/OverviewTable'
 import { PlayersPanel } from './components/PlayersPanel'
 import { buildRows } from './format'
+import logoUrl from '../../../build/icon.svg'
 
 const TAB_KEY = 'lanparty.activeTab'
 type Tab = 'overview' | number
@@ -106,7 +107,7 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <span className="logo">⚔</span>
+          <img className="logo" src={logoUrl} alt="" />
           <div>
             <h1>LAN Party</h1>
             <span className="sub">Age of Empires II: DE ranking</span>

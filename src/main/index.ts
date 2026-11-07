@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import type { AppConfig, StatsCache } from '../shared/types'
 import { fetchStats, searchPlayers } from './aoe-api'
 import { getCache, getConfig, setCache, setConfig } from './store'
+import appIcon from '../../build/icon-256.png?asset'
 
 let mainWindow: BrowserWindow | null = null
 let refreshInFlight: Promise<StatsCache> | null = null
@@ -17,6 +18,8 @@ function createWindow(): void {
     title: 'LAN Party App',
     backgroundColor: '#15120e',
     autoHideMenuBar: true,
+    // macOS takes the icon from the app bundle; Windows/Linux windows need it set.
+    ...(process.platform !== 'darwin' ? { icon: appIcon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,

@@ -31,6 +31,7 @@ Requires Node.js 22+.
 npm install
 npm run dev        # start with hot reload
 npm run typecheck
+npm run icon       # re-render build/icon.png after editing build/icon.svg
 ```
 
 Settings are stored as JSON in the OS app-data folder (`%APPDATA%\LAN Party App` on Windows, `~/Library/Application Support/LAN Party App` on macOS, `~/.config/LAN Party App` on Linux).
