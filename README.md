@@ -38,7 +38,24 @@ npm run dist:linux   # AppImage + .deb
 npm run dist:mac     # .dmg (must be built on a Mac)
 ```
 
-The GitHub Actions workflow in `.github/workflows/build.yml` builds all three platforms. It runs when you push a `v*` tag or start it by hand. The builds are unsigned, so Windows SmartScreen and macOS Gatekeeper will warn on first launch. On macOS, right-click the app and choose **Open**.
+## Releases
+
+Download the latest installers from the [Releases page](https://github.com/Grimgorg/lan-party-app/releases/latest):
+
+| Platform | File |
+| --- | --- |
+| Windows | `LAN-Party-App-Setup-<version>.exe` (installer) or `LAN-Party-App-Portable-<version>.exe` (no install) |
+| macOS | `LAN-Party-App-<version>-mac-arm64.dmg` (Apple Silicon) or `…-mac-x64.dmg` (Intel) |
+| Linux | `LAN-Party-App-<version>-linux-x86_64.AppImage` or `…-linux-amd64.deb` |
+
+Releases are automatic. Every push to `master` builds all three platforms, using `.github/workflows/release.yml`. When the `version` in `package.json` has no GitHub release yet, the workflow publishes release `v<version>` with the installers attached. To ship a new version:
+
+```bash
+npm version patch   # or minor / major: bumps package.json, commits and tags
+git push
+```
+
+The builds are unsigned, so Windows SmartScreen ("More info" → "Run anyway") and macOS Gatekeeper will warn on first launch. On macOS, right-click the app and choose **Open**.
 
 ## Project layout
 
