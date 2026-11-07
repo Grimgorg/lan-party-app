@@ -1,0 +1,71 @@
+{
+  "name": "lan-party-app",
+  "productName": "LAN Party App",
+  "version": "0.1.0",
+  "description": "Desktop app for our LAN party group - AoE II DE rankings and more",
+  "main": "./out/main/index.js",
+  "type": "commonjs",
+  "private": true,
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "dist": "electron-vite build && electron-builder --publish never",
+    "dist:win": "electron-vite build && electron-builder --win --publish never",
+    "dist:mac": "electron-vite build && electron-builder --mac --publish never",
+    "dist:linux": "electron-vite build && electron-builder --linux --publish never"
+  },
+  "build": {
+    "appId": "party.lan.app",
+    "productName": "LAN Party App",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.games"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Game",
+      "maintainer": "LAN Party Group"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0",
+    "electron-vite": "^6.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6"
+  },
+  "allowScripts": {
+    "electron@45.2.3": true,
+    "electron-winstaller@5.4.0": true
+  }
+}
