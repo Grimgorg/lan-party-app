@@ -3,6 +3,8 @@
   "productName": "LAN Party App",
   "version": "0.1.0",
   "description": "Desktop app for our LAN party group - AoE II DE rankings and more",
+  "license": "MIT",
+  "author": "Grimgorg",
   "main": "./out/main/index.js",
   "type": "commonjs",
   "private": true,

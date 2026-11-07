@@ -1,6 +1,11 @@
 # LAN Party App
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Coded with Claude](https://img.shields.io/badge/coded%20with-Claude-d97757.svg)](https://claude.com/claude-code)
+
 Desktop app for our LAN party group (Windows, macOS, Linux). Built with Electron, React and TypeScript.
+
+> 🤖 This project is coded using [Claude Code](https://claude.com/claude-code), Anthropic's AI coding assistant.
 
 ## Features
 
@@ -65,3 +70,7 @@ src/preload/    Safe bridge exposing window.api to the UI
 src/renderer/   React UI
 src/shared/     Types and game-mode definitions shared by both sides
 ```
+
+## License
+
+[MIT](LICENSE): free for anyone to use, copy, modify and distribute, including commercially.
