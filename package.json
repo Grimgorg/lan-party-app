@@ -1,7 +1,7 @@
 {
   "name": "lan-party-app",
   "productName": "LAN Party App",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Desktop app for our LAN party group - AoE II DE rankings and more",
   "license": "MIT",
   "author": "Grimgorg",
@@ -49,6 +49,13 @@
             "x64",
             "arm64"
           ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "category": "public.app-category.games"
@@ -65,7 +72,14 @@
     "portable": {
       "artifactName": "LAN-Party-App-Portable-${version}.${ext}"
     },
-    "icon": "build/icon.png"
+    "icon": "build/icon.png",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Grimgorg",
+        "repo": "lan-party-app"
+      }
+    ]
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
@@ -88,5 +102,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Grimgorg/lan-party-app.git"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.12"
   }
 }

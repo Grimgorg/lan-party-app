@@ -101,6 +101,10 @@ h3 {
   letter-spacing: 0.5px;
   color: var(--gold);
 }
+.version {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
 .logo {
   width: 44px;
   height: 44px;
@@ -566,6 +570,54 @@ input.nick:hover {
 }
 .check input {
   accent-color: var(--gold);
+}
+
+/* ---------- update dialog ---------- */
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 21;
+  width: min(520px, 92vw);
+  padding: 20px 22px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 48px #0008;
+}
+.dialog h2 {
+  font-size: 17px;
+  color: var(--gold);
+}
+.dialog p {
+  margin: 8px 0 0;
+}
+/* Above the players panel, which may be open behind it. */
+.scrim:has(+ .dialog) {
+  z-index: 20;
+}
+.dialog-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+.dialog-actions .spacer {
+  flex: 1;
+}
+.progress {
+  height: 8px;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.progress > div {
+  height: 100%;
+  background: var(--gold);
+  transition: width 0.2s ease-out;
 }
 
 ::-webkit-scrollbar {

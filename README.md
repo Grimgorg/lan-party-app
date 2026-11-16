@@ -61,6 +61,10 @@ npm version patch   # or minor / major: bumps package.json, commits and tags
 git push
 ```
 
+### Updates
+
+At every start, the app checks GitHub for a newer release. When it finds one, it asks: **Update now**, **Later** or **Skip this version**. "Update now" downloads the new version, closes the app, installs the update and starts it again. The Windows installer build, the AppImage and the .deb update themselves this way. The macOS app (unsigned) and the Windows portable .exe can't install updates themselves, so they offer to open the download page instead. Without internet the check fails silently and tries again at the next start. The version you have is shown in the top bar.
+
 The builds are unsigned, so Windows SmartScreen ("More info" → "Run anyway") and macOS Gatekeeper will warn on first launch. On macOS, right-click the app and choose **Open**.
 
 ## Project layout
