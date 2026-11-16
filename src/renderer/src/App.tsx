@@ -4,6 +4,7 @@ import type { AppConfig, StatsCache } from '../../shared/types'
 import { ModeTable } from './components/ModeTable'
 import { OverviewTable } from './components/OverviewTable'
 import { PlayersPanel } from './components/PlayersPanel'
+import { UpdateDialog } from './components/UpdateDialog'
 import { buildRows } from './format'
 import logoUrl from '../../../build/icon.svg'
 
@@ -22,6 +23,7 @@ function loadTab(): Tab {
 export default function App() {
   const [config, setConfig] = useState<AppConfig | null>(null)
   const [cache, setCache] = useState<StatsCache | null>(null)
+  const [version, setVersion] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [panelOpen, setPanelOpen] = useState(false)
@@ -52,7 +54,12 @@ export default function App() {
   // Initial load: show cached stats instantly, then fetch fresh ones.
   useEffect(() => {
     void (async () => {
-      const [cfg, cached] = await Promise.all([window.api.getConfig(), window.api.getCachedStats()])
+      const [cfg, cached, ver] = await Promise.all([
+        window.api.getConfig(),
+        window.api.getCachedStats(),
+        window.api.getAppVersion()
+      ])
+      setVersion(ver)
       setConfig(cfg)
       setCache(cached)
       if (cfg.players.length === 0) setPanelOpen(true)
@@ -110,7 +117,9 @@ export default function App() {
           <img className="logo" src={logoUrl} alt="" />
           <div>
             <h1>LAN Party</h1>
-            <span className="sub">Age of Empires II: DE ranking</span>
+            <span className="sub">
+              Age of Empires II: DE ranking{version && <span className="version"> · v{version}</span>}
+            </span>
           </div>
         </div>
         <div className="top-actions">
@@ -173,6 +182,8 @@ export default function App() {
           <PlayersPanel config={config} snaps={cache?.players ?? {}} onChange={updateConfig} onClose={() => setPanelOpen(false)} />
         </>
       )}
+
+      <UpdateDialog />
     </div>
   )
 }

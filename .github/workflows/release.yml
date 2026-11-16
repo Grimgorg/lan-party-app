@@ -63,11 +63,16 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: installers-${{ matrix.os }}
+          # latest*.yml tell installed apps about the release (electron-updater); the blockmaps
+          # let them download only what changed; the macOS zip is what latest-mac.yml points to.
           path: |
             release/*.exe
             release/*.dmg
+            release/*.zip
             release/*.AppImage
             release/*.deb
+            release/*.blockmap
+            release/latest*.yml
           if-no-files-found: error
 
   release:

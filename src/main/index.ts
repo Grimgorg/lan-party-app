@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import type { AppConfig, StatsCache } from '../shared/types'
 import { fetchStats, searchPlayers } from './aoe-api'
 import { getCache, getConfig, setCache, setConfig } from './store'
+import { checkForUpdate, installUpdate, openReleasePage, skipUpdate } from './updater'
 import appIcon from '../../build/icon-256.png?asset'
 
 let mainWindow: BrowserWindow | null = null
@@ -65,6 +66,7 @@ async function refreshStats(): Promise<StatsCache> {
 }
 
 function registerIpc(): void {
+  ipcMain.handle('app:version', () => app.getVersion())
   ipcMain.handle('config:get', () => getConfig())
   ipcMain.handle('config:set', (_e, patch: Partial<AppConfig>) => setConfig(patch ?? {}))
   ipcMain.handle('stats:cached', () => getCache())
@@ -78,6 +80,10 @@ function registerIpc(): void {
       await shell.openExternal(`https://www.aoe2companion.com/profile/${id}`)
     }
   })
+  ipcMain.handle('update:check', () => checkForUpdate())
+  ipcMain.handle('update:install', (e) => installUpdate(e.sender))
+  ipcMain.handle('update:skip', () => skipUpdate())
+  ipcMain.handle('update:openPage', () => openReleasePage())
 }
 
 if (!app.requestSingleInstanceLock()) {
@@ -98,7 +104,6 @@ if (!app.requestSingleInstanceLock()) {
     })
   })
 
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit()
-  })
+  // Quit on every OS when the window closes, macOS included: a one-window app shouldn't keep running in the Dock.
+  app.on('window-all-closed', () => app.quit())
 }

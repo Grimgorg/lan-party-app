@@ -37,7 +37,19 @@ The code is split into three Electron processes plus shared code. `tsconfig.json
 - **Persistence (`store.ts`):** `config.json` and `stats-cache.json` live in Electron's `userData` folder. Writes go to a temp file that is then renamed into place, and a file that can't be parsed is renamed to `*.corrupt-<ts>`. Every config read and write goes through `sanitize()`, which **drops fields it doesn't know about**. A new `AppConfig` field therefore has to be added to `DEFAULT_CONFIG` and `sanitize()` as well as to the type, or it is silently lost. Visible modes are filtered against `GAME_MODES` in `src/shared/modes.ts`.
 - **Renderer (`App.tsx`):** on startup it shows the cached stats right away, then refreshes. It also handles the auto-refresh timer, F5/Ctrl+R, and the error banner, which falls back to the cache. `format.ts#buildRows` combines watched players with their snapshots: the nickname is shown in place of the in-game name, which then appears underneath. The tables use `useSort`, which always sorts missing values last. Only the active tab is kept in `localStorage`; all other state lives in main's config.
 
-The window refuses to navigate away and opens `http(s)` links in the system browser. The app runs as a single instance: starting it again focuses the open window.
+### Auto updates
+
+`src/main/updater.ts` uses electron-updater. It is the only runtime `dependency`, because electron-vite leaves `dependencies` out of the bundle and electron-builder packs them. The update source is the `build.publish` GitHub setting in `package.json`, which electron-builder writes into the app as `resources/app-update.yml`.
+
+- **Check:** `UpdateDialog` calls `update:check` once per start. Only packaged builds check. The result is cached for the whole run, and a failed check (e.g. offline) just returns `null`.
+- **Asking:** the user chooses Update now, Later, or Skip this version. Skip stores `skippedUpdateVersion` in the config.
+- **Install:** `update:install` downloads with progress events on `update:progress`, then calls `quitAndInstall(true, true)`.
+- **Where updates install themselves:** only on the Windows NSIS build, the AppImage and the .deb (`canInstall`). macOS refuses updates for an unsigned app, and the portable exe can't replace itself, so both open the releases page instead. Main refuses an install that `canInstall` rejects.
+- **What releases must contain:** the workflow uploads the `latest*.yml` files, the blockmaps, and the macOS `zip` target that `latest-mac.yml` points to.
+- **Compatibility:** changing release asset names, the `v<version>` tag format or the `publish` repo breaks updates for installed apps.
+- **Testing locally:** build with `--dir`, then edit `release/win-unpacked/resources/app-update.yml` to `provider: generic` with a `url` that serves another build's `latest.yml` and installer.
+
+The window refuses to navigate away and opens `http(s)` links in the system browser. The app runs as a single instance: starting it again focuses the open window. Closing the window quits the app on every OS, macOS included.
 
 ## Releases
 

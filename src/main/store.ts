@@ -70,7 +70,12 @@ function sanitize(input: Partial<AppConfig>, base: AppConfig): AppConfig {
     const n = Number(input.autoRefreshMinutes)
     autoRefreshMinutes = Number.isFinite(n) ? Math.min(Math.max(Math.round(n), 0), 240) : base.autoRefreshMinutes
   }
-  return { players, visibleModes, autoRefreshMinutes }
+  let skippedUpdateVersion = base.skippedUpdateVersion
+  if (input.skippedUpdateVersion !== undefined) {
+    const v = input.skippedUpdateVersion
+    skippedUpdateVersion = typeof v === 'string' && /^[\w.+-]{1,40}$/.test(v) ? v : undefined
+  }
+  return { players, visibleModes, autoRefreshMinutes, ...(skippedUpdateVersion ? { skippedUpdateVersion } : {}) }
 }
 
 let config: AppConfig | null = null
